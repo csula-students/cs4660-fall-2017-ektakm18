@@ -1,4 +1,5 @@
 """Lists defines simple list related operations"""
+from __future__ import division
 
 def get_first_item(li):
     """Return the first item from the list"""
@@ -18,4 +19,6 @@ def get_sum(li):
 
 def get_avg(li):
     """Returns the average of the list items"""
-    return get_sum(li) / len(li)
+    x = get_sum(li)
+    y = len(li)
+    return x/y
