@@ -2,7 +2,6 @@
 from io import open
 from tutorial import lists
 
-
 class SimpleFile(object):
     """SimpleFile tests using file read api to do some simple math"""
     def __init__(self, file_path):
@@ -34,7 +33,6 @@ class SimpleFile(object):
         with zero)
         """
         return max(self.numbers[line_number])
-        
 
     def get_min(self, line_number):
         """
