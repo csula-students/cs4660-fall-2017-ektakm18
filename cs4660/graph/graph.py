@@ -222,7 +222,6 @@ class AdjacencyMatrix(object):
     def remove_edge(self, edge):
         index1 = self.__get_node_index(edge.from_node)
         index2 = self.__get_node_index(edge.to_node)
-
         if self.adjacency_matrix[index1][index2] == edge.weight:
             self.adjacency_matrix[index1][index2] = 0
             return True
@@ -238,7 +237,6 @@ class AdjacencyMatrix(object):
             index2 = self.__get_node_index(node_2)
             return self.adjacency_matrix[index1][index2]
         return math.inf
-
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
@@ -295,6 +293,9 @@ class ObjectOriented(object):
     def remove_edge(self, edge):
         if edge in self.edges:
             self.edges.remove(edge)
+
+        if edge not in self.edges:
+            self.edges.append(edge)
             return True
         return False
 
@@ -304,3 +305,9 @@ class ObjectOriented(object):
                 if (edge1.from_node == node_1 and edge1.to_node == node_2):
                     return edge1.weight
         return math.inf
+
+    def remove_edge(self, edge):
+        if edge in self.edges:
+            self.edges.remove(edge)
+            return True
+        return False
