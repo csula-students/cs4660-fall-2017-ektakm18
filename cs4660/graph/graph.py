@@ -1,8 +1,6 @@
 """
 graph module defines the knowledge representations files
-
 A Graph has following methods:
-
 * adjacent(node_1, node_2)
     - returns true if node_1 and node_2 are directly connected or false otherwise
 * neighbors(node)
@@ -21,17 +19,15 @@ A Graph has following methods:
     - returns true if the edge is removed and false if the edge does not exist
 """
 
+import math
 from io import open
 from operator import itemgetter
 
 def construct_graph_from_file(graph, file_path):
     """
     TODO: read content from file_path, then add nodes and edges to graph object
-
     note that grpah object will be either of AdjacencyList, AdjacencyMatrix or ObjectOriented
-
     In example, you will need to do something similar to following:
-
     1. add number of nodes to graph first (first line)
     2. for each following line (from second line to last line), add them as edge to graph
     3. return the graph
@@ -144,6 +140,13 @@ class AdjacencyList(object):
             return True
         return False
 
+    def distance(self, node_1, node_2):
+        if node_1 in self.adjacency_list:
+            all_edges = self.adjacency_list[node_1]
+            for edge1 in all_edges:
+                if node_2 == edge1.to_node:
+                    return edge1.weight
+        return math.inf
 
 class AdjacencyMatrix(object):
     def __init__(self):
@@ -219,7 +222,6 @@ class AdjacencyMatrix(object):
     def remove_edge(self, edge):
         index1 = self.__get_node_index(edge.from_node)
         index2 = self.__get_node_index(edge.to_node)
-
         if self.adjacency_matrix[index1][index2] == edge.weight:
             self.adjacency_matrix[index1][index2] = 0
             return True
@@ -228,6 +230,13 @@ class AdjacencyMatrix(object):
     def __get_node_index(self, node):
         """helper method to find node index"""
         return self.nodes.index(node)
+
+    def distance(self, node_1, node_2):
+        if node_1 in self.nodes:
+            index1 = self.__get_node_index(node_1)
+            index2 = self.__get_node_index(node_2)
+            return self.adjacency_matrix[index1][index2]
+        return math.inf
 
 class ObjectOriented(object):
     """ObjectOriented defines the edges and nodes as both list"""
@@ -280,6 +289,22 @@ class ObjectOriented(object):
             self.edges.append(edge)
             return True
         return False
+
+    def remove_edge(self, edge):
+        if edge in self.edges:
+            self.edges.remove(edge)
+
+        if edge not in self.edges:
+            self.edges.append(edge)
+            return True
+        return False
+
+    def distance(self, node_1, node_2):
+        if node_1 in self.nodes:
+            for edge1 in self.edges:
+                if (edge1.from_node == node_1 and edge1.to_node == node_2):
+                    return edge1.weight
+        return math.inf
 
     def remove_edge(self, edge):
         if edge in self.edges:
