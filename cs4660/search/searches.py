@@ -153,23 +153,12 @@ def dijkstra_search(graph, initial_node, dest_node):
             node1 = par
         else:
             break
-    
+    #print('dijk')
     return path_node
 
-
- minimum_cost_1 = 1
-   minimum_cost_2 = 1
-     dx = abs(node.x - goal.x)
-     dy = abs(node.y - goal.y)
-     return minimum_cost_1 * (dx + dy) + (minimum_cost_2 - 2 * minimum_cost_1) * min(dx, dy)
-
-
-def heuristic(n1, n2):
-    
-    dx = abs(n1.x - n2.x)
-    dy = abs(n1.y - n2.y)
-    return 
-    return D * sqrt(dx * dx + dy * dy)
+def heuristic(a, b):
+   # Manhattan distance on a square grid
+   return abs(a.x - b.x) + abs(a.y - b.y)
 
 def a_star_search(graph, initial_node, dest_node):
     """
@@ -177,4 +166,52 @@ def a_star_search(graph, initial_node, dest_node):
     uses graph to do search from the initial_node to dest_node
     returns a list of actions going from the initial node to dest_node
     """
-    pass
+    heap1 = []
+    neig = []
+    #visited = []
+    predecessor_dic = {}
+    distance_dic = {}
+    
+    heapq.heappush(heap1, PriorityN(0, initial_node))
+    distance_dic[initial_node] = 0
+    path_node = []
+    #sum2 = 0
+    #print("entered dijkstra")
+
+    while heap1:
+        current_node = heapq.heappop(heap1).node
+        #if current_node not in visited:   
+        neig = graph.neighbors(current_node)
+        #parsing neighbors of the current node
+        for n in neig:
+            wei = graph.distance(current_node, n)
+            dist = wei + distance_dic[current_node]
+            if n not in distance_dic or dist < distance_dic[n]:
+                distance_dic[n] = dist
+                predecessor_dic[n] = current_node 
+                total = dist + heuristic(current_node.data, n.data)
+                heapq.heappush(heap1, PriorityN(total, n))
+                        
+        #visited.append(current_node)
+        
+        if current_node == dest_node:
+            break
+
+    node1 = dest_node
+    #print('before while')
+    #print('node1',node1)
+    #print('dic',predecessor_dic)
+    #sum2 = 0
+    #print('parent', predecessor_dic)
+    while True:
+        if node1 in predecessor_dic:
+            par = predecessor_dic[node1]
+            wei = graph.distance(par, node1)
+    #        sum2 += wei
+            path_node.insert(0, g.Edge(par, node1, wei))
+            node1 = par
+        else:
+            break
+    
+    #print('path_a', path_node)
+    return path_node
