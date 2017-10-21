@@ -47,4 +47,13 @@ def convert_edge_to_grid_actions(edges):
 
     e.g. Edge(Node(Tile(1, 2), Tile(2, 2), 1)) => "S"
     """
-    return ""
+    path = ""
+    direc = { (0,0):"", (1,0):"W", (-1,0):"E", (0,1):"N", (0,-1):"S" }
+    if edges:
+        for edge1 in edges:
+            tile1 = edge1.from_node.data
+            tile2 = edge1.to_node.data
+            path = path + direc[ (tile1.x - tile2.x) , (tile1.y - tile2.y) ]
+
+
+    return path
